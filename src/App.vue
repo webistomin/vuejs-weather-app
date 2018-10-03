@@ -1,7 +1,17 @@
 <template>
   <div id="app">
     <header>
-      <!--сделать строку поиска и тоглер температуры-->
+      <section class="search">
+        <div class="search__inner">
+          <input type="text" class="search__input" autofocus>
+          <button class="search__btn" type="button">Add city</button>
+        </div>
+        <ul class="search__list">
+          <li class="search__item">Moscow</li>
+          <li class="search__item">Moscow</li>
+          <li class="search__item">Moscow</li>
+        </ul>
+      </section>
     </header>
     <main>
       <section class="forecast">
@@ -763,6 +773,61 @@ export default {};
       transform: translateX(-50%);
       opacity: 0.7;
     }
+  }
+
+  .search {
+    padding: 20px;
+    padding-bottom: 0;
+    background-color: cornflowerblue;
+
+    &__inner {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    &__input {
+      padding-left: 10px;
+      font-family: 'Oswald', sans-serif;
+      font-weight: 400;
+      font-size: 16px;
+    }
+
+    &__btn {
+      width: 100px;
+      padding: 10px;
+      color: #000000;
+      font-family: 'Oswald', sans-serif;
+      font-weight: 400;
+      font-size: 16px;
+      text-transform: uppercase;
+      background-color: #ffffff;
+    }
+
+    &__list {
+      padding-top: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    &__item {
+      padding: 10px;
+      color: #ffffff;
+      text-align: center;
+      font-family: 'Oswald', sans-serif;
+      font-weight: 400;
+      font-size: 16px;
+      text-transform: uppercase;
+
+      &:hover {
+        color: beige;
+      }
+
+      &:last-child {
+        padding-bottom: 0;
+      }
+    }
+
+
   }
 
   .forecast {
