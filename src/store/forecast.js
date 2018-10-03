@@ -13,7 +13,7 @@ export default {
   actions: {
     getForecastsFromAPI({ commit, state }) {
       axios
-        .get(`http://api.openweathermap.org/data/2.5/forecast?q=London,us&APPID=${state.publicKey}`)
+        .get(`http://api.openweathermap.org/data/2.5/forecast?q=London,us&units=metric&cnt=7&&APPID=${state.publicKey}`)
         .then((response) => {
           commit('saveForecasts', response.data);
         });
