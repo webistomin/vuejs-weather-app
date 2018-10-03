@@ -7,9 +7,10 @@
           <button class="search__btn" type="button">Add city</button>
         </div>
         <ul class="search__list">
-          <li class="search__item">Moscow</li>
-          <li class="search__item">Moscow</li>
-          <li class="search__item">Moscow</li>
+          <li class="search__item">
+            <span class="search__name">Moscow</span>
+            <button class="search__button"></button>
+          </li>
         </ul>
       </section>
     </header>
@@ -801,6 +802,41 @@ export default {};
       font-size: 16px;
       text-transform: uppercase;
       background-color: #ffffff;
+      cursor: pointer;
+    }
+
+    &__button {
+      width: 20px;
+      height: 20px;
+      position: relative;
+      cursor: pointer;
+
+      &::before,
+      &::after {
+        width: inherit;
+        height: 2px;
+        content: "";
+        position: absolute;
+        left: 0;
+        background-color: red;
+      }
+
+      &::before {
+        transform: rotate(45deg);
+      }
+
+      &::after {
+        transform: rotate(-45deg);
+      }
+    }
+
+    &__name {
+      padding: 0 30px;
+      cursor: pointer;
+
+      &:hover {
+        color: blueviolet;
+      }
     }
 
     &__list {
@@ -810,6 +846,9 @@ export default {};
     }
 
     &__item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
       padding: 10px;
       color: #ffffff;
       text-align: center;
@@ -817,10 +856,6 @@ export default {};
       font-weight: 400;
       font-size: 16px;
       text-transform: uppercase;
-
-      &:hover {
-        color: beige;
-      }
 
       &:last-child {
         padding-bottom: 0;
