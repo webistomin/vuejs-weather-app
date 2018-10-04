@@ -166,6 +166,7 @@
       font-weight: 400;
       font-size: 16px;
       margin-bottom: 10px;
+      text-align: center;
 
       &--mb {
         margin-bottom: 40px;
@@ -212,6 +213,30 @@
 
       &:nth-child(7n+7) {
         background: rgba(0, 0, 0, 0.7);
+      }
+
+
+    }
+
+    @media (min-width: 480px) {
+      &__item {
+        width: 50%;
+      }
+    }
+
+    @media (min-width: 660px) {
+      &__item {
+        width: 33.33%;
+
+        &:last-child {
+          width: 100%;
+        }
+      }
+    }
+
+    @media (min-width: 992px) {
+      &__item {
+        width: 20%;
       }
     }
   }
