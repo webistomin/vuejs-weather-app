@@ -2,8 +2,8 @@
   <section class="forecast">
     <div class="forecast__current">
       <p class="forecast__location">
-        <span class="forecast__city">Karabanovo,</span>
-        <span class="forecast__country">RU</span>
+        <span class="forecast__city">{{getForecasts.city_name}},</span>
+        <span class="forecast__country">{{getForecasts.country_code}}</span>
       </p>
     </div>
     <ul class="forecast__list">
@@ -11,9 +11,27 @@
           v-for="(forecast, index) of getForecasts.data">
         <span class="forecast__day">{{forecast.datetime | getDate}}</span>
         <div class="weather" v-html="getWeatherIcon(forecast.weather.code)"></div>
-        <p class="forecast__temperature">
-          <span class="forecast__number">{{Math.ceil(forecast.temp)}}</span>
+        <p class="forecast__group forecast__group--mb">
+          <span class="forecast__number">{{forecast.weather.description}}</span>
+        </p>
+        <p class="forecast__group">
+          <span class="forecast__number">Avg.temp: {{Math.ceil(forecast.temp)}}</span>
           <span class="forecast__scale">&#176;C</span>
+        </p>
+        <p class="forecast__group">
+          <span class="forecast__number">Pressure: {{Math.ceil(forecast.pres)}}</span>
+          <span class="forecast__scale">mb</span>
+        </p>
+        <p class="forecast__group">
+          <span class="forecast__number">Wind speed: {{Math.ceil(forecast.wind_spd)}}</span>
+          <span class="forecast__scale">m/s</span>
+        </p>
+        <p class="forecast__group">
+          <span class="forecast__number">Wind direction: {{Math.ceil(forecast.wind_dir) | toTextualDescription}}</span>
+        </p>
+        <p class="forecast__group">
+          <span class="forecast__number">Humidity: {{Math.ceil(forecast.rh)}}</span>
+          <span class="forecast__scale">%</span>
         </p>
       </li>
     </ul>
@@ -101,6 +119,17 @@
       getDate(datetime) {
         return new Date(datetime).toDateString();
       },
+      toTextualDescription(degrees) {
+        if (degrees > 337.5) return 'Northerly';
+        if (degrees > 292.5) return 'North Westerly';
+        if (degrees > 247.5) return 'Westerly';
+        if (degrees > 202.5) return 'South Westerly';
+        if (degrees > 157.5) return 'Southerly';
+        if (degrees > 122.5) return 'South Easterly';
+        if (degrees > 67.5) return 'Easterly';
+        if (degrees > 22.5) { return 'North Easterly'; }
+        return 'Northerly';
+      },
     },
   };
 </script>
@@ -132,10 +161,15 @@
       text-align: center;
     }
 
-    &__temperature {
+    &__group {
       font-family: 'Quattrocento', serif;
       font-weight: 400;
       font-size: 16px;
+      margin-bottom: 10px;
+
+      &--mb {
+        margin-bottom: 40px;
+      }
     }
 
     &__list {
@@ -186,7 +220,6 @@
     position: relative;
     flex: 1;
     padding: 40px;
-    padding-bottom: 80px;
     margin: 2px;
     border-radius: 3px;
   }

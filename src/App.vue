@@ -25,13 +25,13 @@
         switch (true) {
           default:
             return 'background-color: cornflowerblue';
-          case averageTemperature > 30:
+          case averageTemperature >= 30:
             return 'background-color: #ff4500';
-          case averageTemperature > 20 && averageTemperature < 30:
+          case averageTemperature >= 20 && averageTemperature < 30:
             return 'background-color: #ffd700';
-          case averageTemperature > 10 && averageTemperature < 20:
+          case averageTemperature >= 10 && averageTemperature < 20:
             return 'background-color: #9acd32';
-          case averageTemperature > 0 && averageTemperature < 10:
+          case averageTemperature >= 0 && averageTemperature < 10:
             return 'background-color: #836fff';
           case averageTemperature < 0:
             return 'background-color: #63b8ff';
