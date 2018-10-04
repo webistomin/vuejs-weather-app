@@ -1,6 +1,8 @@
 # vuejs-weather-app
 > Погодное одностраничное веб-приложение
 
+ https://vuejs-weather-app-32dde.firebaseapp.com
+
 [![Build status][travis-image]][travis-url] [![dependencies Status](https://david-dm.org/webistomin/vuejs-weather-app/status.svg)](https://david-dm.org/webistomin/vuejs-weather-app) [![Dependency status][dependency-image]][dependency-url] 
 
 При запуске приложение автоматически запрашивать погоду по координатам пользователя - это город/место по умолчанию. Приложение позволяет добавлять и удалять собственные города.
@@ -56,10 +58,6 @@
     <tr>
       <td><a href="https://vuex.vuejs.org/ru/">Vuex</a></td>
       <td>Центральное хранилище данных для всех компонентов приложения</td>
-    </tr>
-     <tr>
-      <td><a href="https://vuetifyjs.com/ru/">Vuetify</a></td>
-      <td>Фреймворк, предоставляющий набор компнентов UI в Material Design</td>
     </tr>
     <tr>
       <td><a href="https://ru.vuejs.org/v2/cookbook/using-axios-to-consume-apis.html">axios</a></td>

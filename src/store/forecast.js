@@ -25,6 +25,7 @@ export default {
   actions: {
     getForecastsFromAPI({ commit, state, rootState }) {
       let resultTemperature = 0;
+      commit('setErrorMessage', '');
       commit('updateLoadingState', true);
       axios
         .get(`https://api.weatherbit.io/v2.0/forecast/daily?city=${rootState.searchCity.searchQuery},${rootState.searchCity.selectedCountry}&key=${state.publicKey}`)
