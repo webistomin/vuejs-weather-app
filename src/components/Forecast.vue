@@ -9,89 +9,13 @@
     <ul class="forecast__list">
       <li class="forecast__item" v-for="(forecast, index) of getForecasts.data">
         <span class="forecast__day">{{forecast.datetime | getDate}}</span>
-        <div class="weather">
-          <span class="icon icon--sun">Sun</span>
-          <span class="icon icon--sun-flare anim--pulse">Sun flare</span>
-        </div>
+        <span>{{forecast.weather.code}}</span>
+        <div class="weather" v-html="getWeatherIcon(forecast.weather.code)"></div>
         <p class="forecast__temperature">
           <span class="forecast__number">{{Math.ceil(forecast.temp)}}</span>
           <span class="forecast__scale">&#176;C</span>
         </p>
       </li>
-      <!--<li class="forecast__item" >-->
-        <!--<span class="forecast__day"></span>-->
-        <!--<div class="weather">-->
-          <!--<div class="icon icon&#45;&#45;cloud icon&#45;&#45;cloud-dark">Rain cloud</div>-->
-          <!--<div class="icon icon&#45;&#45;rain icon&#45;&#45;rain-1 anim&#45;&#45;fall-1">Rain</div>-->
-          <!--<div class="icon icon&#45;&#45;rain icon&#45;&#45;rain-2 anim&#45;&#45;fall-2">Rain</div>-->
-          <!--<div class="icon icon&#45;&#45;rain icon&#45;&#45;rain-3 anim&#45;&#45;fall-3">Rain</div>-->
-        <!--</div>-->
-        <!--<p class="forecast__temperature">-->
-          <!--<span class="forecast__number">12</span>-->
-          <!--<span class="forecast__scale">&#176;C</span>-->
-        <!--</p>-->
-      <!--</li>-->
-      <!--<li class="forecast__item">-->
-        <!--<span class="forecast__day">Wednesday</span>-->
-        <!--<div class="weather">-->
-          <!--<div class="icon icon&#45;&#45;cloud anim&#45;&#45;expand">Clouds</div>-->
-        <!--</div>-->
-        <!--<p class="forecast__temperature">-->
-          <!--<span class="forecast__number">12</span>-->
-          <!--<span class="forecast__scale">&#176;C</span>-->
-        <!--</p>-->
-      <!--</li>-->
-      <!--<li class="forecast__item">-->
-        <!--<span class="forecast__day">Thursday</span>-->
-        <!--<div class="weather">-->
-          <!--<span class="icon icon&#45;&#45;sun icon&#45;&#45;sun-small">Sun</span>-->
-          <!--<span class="icon icon&#45;&#45;sun-flare icon&#45;&#45;sun-flare-small anim&#45;&#45;pulse">Sun flare</span>-->
-          <!--<div class="icon icon&#45;&#45;cloud icon&#45;&#45;cloud-sun anim&#45;&#45;bobble">Cloudy with sun</div>-->
-        <!--</div>-->
-        <!--<p class="forecast__temperature">-->
-          <!--<span class="forecast__number">12</span>-->
-          <!--<span class="forecast__scale">&#176;C</span>-->
-        <!--</p>-->
-      <!--</li>-->
-      <!--<li class="forecast__item">-->
-        <!--<span class="forecast__day">Friday</span>-->
-        <!--<div class="weather">-->
-          <!--<div class="icon icon&#45;&#45;cloud icon&#45;&#45;cloud-dark anim&#45;&#45;flash">Storm cloud</div>-->
-          <!--<div class="icon icon&#45;&#45;rain icon&#45;&#45;rain-1 anim&#45;&#45;fall-1">Rain</div>-->
-          <!--<div class="icon icon&#45;&#45;rain icon&#45;&#45;rain-2 anim&#45;&#45;fall-2">Rain</div>-->
-          <!--<div class="icon icon&#45;&#45;rain icon&#45;&#45;rain-3 anim&#45;&#45;fall-3">Rain</div>-->
-        <!--</div>-->
-        <!--<p class="forecast__temperature">-->
-          <!--<span class="forecast__number">12</span>-->
-          <!--<span class="forecast__scale">&#176;C</span>-->
-        <!--</p>-->
-      <!--</li>-->
-      <!--<li class="forecast__item">-->
-        <!--<span class="forecast__day">Saturday</span>-->
-        <!--<div class="weather">-->
-          <!--<div class="icon icon&#45;&#45;cloud">Clouds</div>-->
-          <!--<span class="icon icon&#45;&#45;snow icon&#45;&#45;snow-1 anim&#45;&#45;float-down-1">Snow</span>-->
-          <!--<span class="icon icon&#45;&#45;snow icon&#45;&#45;snow-2 anim&#45;&#45;float-down-2">Snow</span>-->
-          <!--<span class="icon icon&#45;&#45;snow icon&#45;&#45;snow-3 anim&#45;&#45;float-down-3">Snow</span>-->
-        <!--</div>-->
-        <!--<p class="forecast__temperature">-->
-          <!--<span class="forecast__number">12</span>-->
-          <!--<span class="forecast__scale">&#176;C</span>-->
-        <!--</p>-->
-      <!--</li>-->
-      <!--<li class="forecast__item">-->
-        <!--<span class="forecast__day">Sunday</span>-->
-        <!--<div class="weather">-->
-          <!--<span class="icon icon&#45;&#45;fog icon&#45;&#45;fog-1 anim&#45;&#45;float-1">Fog</span>-->
-          <!--<span class="icon icon&#45;&#45;fog icon&#45;&#45;fog-2 anim&#45;&#45;float-2">Fog</span>-->
-          <!--<span class="icon icon&#45;&#45;fog icon&#45;&#45;fog-3 anim&#45;&#45;float-1">Fog</span>-->
-          <!--<span class="icon icon&#45;&#45;fog icon&#45;&#45;fog-4 anim&#45;&#45;float-2">Fog</span>-->
-        <!--</div>-->
-        <!--<p class="forecast__temperature">-->
-          <!--<span class="forecast__number">12</span>-->
-          <!--<span class="forecast__scale">&#176;C</span>-->
-        <!--</p>-->
-      <!--</li>-->
     </ul>
   </section>
 </template>
@@ -105,6 +29,67 @@
     computed: {
       getForecasts() {
         return this.$store.getters.getForecasts;
+      },
+    },
+    methods: {
+      getWeatherIcon(code) {
+        const rainWithLightningCodes = [200, 201, 202, 230, 231, 232, 233];
+        const rainCodes = [300, 301, 302, 500, 501, 502, 511, 520, 521, 522, 900];
+        const snowCodes = [600, 601, 602, 610, 621, 611, 612, 623];
+        const fogCodes = [700, 711, 721, 731, 741, 751];
+        const clearSkyCodes = [800];
+        const cloudsWithSunCodes = [801, 802, 803];
+        const cloudsCodes = [804];
+
+        switch (true) {
+          default:
+            return `
+              <div class="icon icon--cloud anim--expand">Clouds</div>
+            `;
+          case rainWithLightningCodes.indexOf(code) !== -1:
+            return `
+            <div class="icon icon--cloud icon--cloud-dark anim--flash">Storm cloud</div>
+            <div class="icon icon--rain icon--rain-1 anim--fall-1">Rain</div>
+            <div class="icon icon--rain icon--rain-2 anim--fall-2">Rain</div>
+            <div class="icon icon--rain icon--rain-3 anim--fall-3">Rain</div>
+            `;
+          case rainCodes.indexOf(code) !== -1:
+            return `
+            <div class="icon icon--cloud icon--cloud-dark">Rain cloud</div>
+            <div class="icon icon--rain icon--rain-1 anim--fall-1">Rain</div>
+            <div class="icon icon--rain icon--rain-2 anim--fall-2">Rain</div>
+            <div class="icon icon--rain icon--rain-3 anim--fall-3">Rain</div>
+            `;
+          case snowCodes.indexOf(code) !== -1:
+            return `
+             <div class="icon icon--cloud">Clouds</div>
+             <span class="icon icon--snow icon--snow-1 anim--float-down-1">Snow</span>
+             <span class="icon icon--snow icon--snow-2 anim--float-down-2">Snow</span>
+             <span class="icon icon--snow icon--snow-3 anim--float-down-3">Snow</span>
+            `;
+          case fogCodes.indexOf(code) !== -1:
+            return `
+              <span class="icon icon--fog icon--fog-1 anim--float-1">Fog</span>
+              <span class="icon icon--fog icon--fog-2 anim--float-2">Fog</span>
+              <span class="icon icon--fog icon--fog-3 anim--float-1">Fog</span>
+              <span class="icon icon--fog icon--fog-4 anim--float-2">Fog</span>
+            `;
+          case clearSkyCodes.indexOf(code) !== -1:
+            return `
+            <span class="icon icon--sun">Sun</span>
+            <span class="icon icon--sun-flare anim--pulse">Sun flare</span>
+            `;
+          case cloudsWithSunCodes.indexOf(code) !== -1:
+            return `
+            <span class="icon icon--sun icon--sun-small">Sun</span>
+            <span class="icon icon--sun-flare icon--sun-flare-small anim--pulse">Sun flare</span>
+            <div class="icon icon--cloud icon--cloud-sun anim--bobble">Cloudy with sun</div>
+            `;
+          case cloudsCodes.indexOf(code) !== -1:
+            return `
+              <div class="icon icon--cloud anim--expand">Clouds</div>
+            `;
+        }
       },
     },
     filters: {
