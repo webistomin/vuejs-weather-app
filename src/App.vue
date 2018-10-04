@@ -89,6 +89,7 @@
 <style lang="less">
   #app {
     transition: all 0.3s ease-in-out;
+    height: 100vh;
   }
 
   body {

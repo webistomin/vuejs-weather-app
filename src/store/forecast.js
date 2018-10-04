@@ -6,6 +6,7 @@ export default {
     forecasts: [],
     averageTemperature: 0,
     loading: false,
+    error: '',
   },
   mutations: {
     saveForecasts(state, payload) {
@@ -16,6 +17,9 @@ export default {
     },
     updateLoadingState(state, payload) {
       state.loading = payload;
+    },
+    setErrorMessage(state, payload) {
+      state.error = payload;
     },
   },
   actions: {
@@ -31,6 +35,10 @@ export default {
           }
           commit('saveTemperature', Math.ceil(resultTemperature / response.data.data.length));
           commit('updateLoadingState', false);
+        }).catch((error) => {
+          commit('updateLoadingState', false);
+          commit('setErrorMessage', error.message);
+          throw error;
         });
     },
   },
@@ -43,6 +51,9 @@ export default {
     },
     getLoadingState(state) {
       return state.loading;
+    },
+    getErrorMessage(state) {
+      return state.error;
     },
   },
 };

@@ -1,5 +1,6 @@
 <template>
-  <section class="forecast">
+  <h1 class="error" v-if="getErrorMessage">This city does not exist 😆	</h1>
+  <section class="forecast" v-else-if="getForecasts.length !== 0">
     <div class="forecast__current">
       <p class="forecast__location">
         <span class="forecast__city">{{getForecasts.city_name}},</span>
@@ -52,6 +53,9 @@
     computed: {
       getForecasts() {
         return this.$store.getters.getForecasts;
+      },
+      getErrorMessage() {
+        return this.$store.getters.getErrorMessage;
       },
     },
     methods: {
@@ -136,6 +140,14 @@
 </script>
 
 <style lang="less">
+  .error {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 400;
+    color: #ffffff;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
   .forecast {
 
     &__current {
