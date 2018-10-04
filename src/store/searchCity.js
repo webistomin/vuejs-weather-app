@@ -1,7 +1,7 @@
 export default {
   state: {
-    selectedCountry: 'RU',
-    searchQuery: 'Moscow',
+    selectedCountry: '',
+    searchQuery: '',
   },
   mutations: {
     saveSelectedCountry(state, payload) {

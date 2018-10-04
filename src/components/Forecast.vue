@@ -47,7 +47,7 @@
       };
     },
     mounted() {
-      this.$store.dispatch('getForecastsFromAPI');
+      // this.$store.dispatch('getForecastsFromAPI');
     },
     computed: {
       getForecasts() {
@@ -117,7 +117,8 @@
     },
     filters: {
       getDate(datetime) {
-        return new Date(datetime).toDateString();
+        const options = { weekday: 'long', month: 'long', day: 'numeric' };
+        return new Date(datetime).toLocaleDateString('en-US', options);
       },
       toTextualDescription(degrees) {
         if (degrees > 337.5) return 'Northerly';

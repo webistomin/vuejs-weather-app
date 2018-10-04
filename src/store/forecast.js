@@ -5,6 +5,7 @@ export default {
     publicKey: '08dfd1c2ed554573bd99d2026ae852cf',
     forecasts: [],
     averageTemperature: 0,
+    loading: false,
   },
   mutations: {
     saveForecasts(state, payload) {
@@ -13,10 +14,14 @@ export default {
     saveTemperature(state, payload) {
       state.averageTemperature = payload;
     },
+    updateLoadingState(state, payload) {
+      state.loading = payload;
+    },
   },
   actions: {
     getForecastsFromAPI({ commit, state, rootState }) {
       let resultTemperature = 0;
+      commit('updateLoadingState', true);
       axios
         .get(`https://api.weatherbit.io/v2.0/forecast/daily?city=${rootState.searchCity.searchQuery},${rootState.searchCity.selectedCountry}&key=${state.publicKey}`)
         .then((response) => {
@@ -25,6 +30,7 @@ export default {
             resultTemperature += response.data.data[i].temp;
           }
           commit('saveTemperature', Math.ceil(resultTemperature / response.data.data.length));
+          commit('updateLoadingState', false);
         });
     },
   },
@@ -34,6 +40,9 @@ export default {
     },
     getAverageTemperature(state) {
       return state.averageTemperature;
+    },
+    getLoadingState(state) {
+      return state.loading;
     },
   },
 };

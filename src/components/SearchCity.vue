@@ -227,7 +227,8 @@
                class="search__input"
                autofocus
                v-model="searchQuery"
-                placeholder="Please, enter city name">
+               @input="debouncedGetAnswer"
+               placeholder="Please, enter city name">
         <!--<button class="search__btn" type="button">Add city</button>-->
       </div>
       <!--<ul class="search__list">-->
@@ -240,9 +241,19 @@
 </template>
 
 <script>
+  import _ from 'lodash';
+
   export default {
     data() {
       return {};
+    },
+    created() {
+      this.debouncedGetAnswer = _.debounce(this.getForecastsFromAPI, 500);
+    },
+    methods: {
+      getForecastsFromAPI() {
+        this.$store.dispatch('getForecastsFromAPI');
+      },
     },
     computed: {
       selectedCountry: {
@@ -264,10 +275,9 @@
     },
     watch: {
       selectedCountry() {
-        this.$store.dispatch('getForecastsFromAPI');
-      },
-      searchQuery() {
-        this.$store.dispatch('getForecastsFromAPI');
+        if (this.searchQuery) {
+          this.$store.dispatch('getForecastsFromAPI');
+        }
       },
     },
   };
