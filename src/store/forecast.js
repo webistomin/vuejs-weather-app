@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export default {
   state: {
-    publicKey: 'd71ba7d3df7e6107a6afbb2e485b0c74',
+    publicKey: '08dfd1c2ed554573bd99d2026ae852cf',
     forecasts: [],
   },
   mutations: {
@@ -11,9 +11,10 @@ export default {
     },
   },
   actions: {
-    getForecastsFromAPI({ commit, state }) {
+    getForecastsFromAPI({ commit, state, rootState }) {
+      // const countryCode = rootState.searchCity.selectedCountry.toLowerCase();
       axios
-        .get(`http://api.openweathermap.org/data/2.5/forecast?q=London,us&units=metric&cnt=7&&APPID=${state.publicKey}`)
+        .get(`https://api.weatherbit.io/v2.0/forecast/daily?city=${rootState.searchCity.searchQuery},${rootState.searchCity.selectedCountry}&key=${state.publicKey}`)
         .then((response) => {
           commit('saveForecasts', response.data);
         });
