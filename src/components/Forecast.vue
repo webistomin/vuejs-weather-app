@@ -7,9 +7,9 @@
       </p>
     </div>
     <ul class="forecast__list">
-      <li class="forecast__item" v-for="(forecast, index) of getForecasts.data">
+      <li class="forecast__item"
+          v-for="(forecast, index) of getForecasts.data">
         <span class="forecast__day">{{forecast.datetime | getDate}}</span>
-        <span>{{forecast.weather.code}}</span>
         <div class="weather" v-html="getWeatherIcon(forecast.weather.code)"></div>
         <p class="forecast__temperature">
           <span class="forecast__number">{{Math.ceil(forecast.temp)}}</span>
@@ -23,6 +23,11 @@
 <script>
   export default {
     name: 'Forecast',
+    data() {
+      return {
+        opened: false,
+      };
+    },
     mounted() {
       this.$store.dispatch('getForecastsFromAPI');
     },
@@ -102,7 +107,6 @@
 
 <style lang="less">
   .forecast {
-    background-color: cornflowerblue;
 
     &__current {
       display: flex;
@@ -125,6 +129,7 @@
       font-weight: 400;
       font-size: 20px;
       text-transform: uppercase;
+      text-align: center;
     }
 
     &__temperature {
@@ -139,7 +144,7 @@
     }
 
     &__item {
-      width: 50%;
+      width: 100%;
       box-sizing: border-box;
       color: #ffffff;
       display: flex;
@@ -147,32 +152,31 @@
       align-items: center;
       padding: 20px;
 
-      &:first-child {
+      &:nth-child(7n+1) {
         background: rgba(0, 0, 0, 0.1);
       }
 
-      &:nth-child(2) {
+      &:nth-child(7n+2) {
         background: rgba(0, 0, 0, 0.2);
       }
 
-      &:nth-child(3) {
+      &:nth-child(7n+3) {
         background: rgba(0, 0, 0, 0.3);
       }
 
-      &:nth-child(4) {
+      &:nth-child(7n+4) {
         background: rgba(0, 0, 0, 0.4);
       }
 
-      &:nth-child(5) {
+      &:nth-child(7n+5) {
         background: rgba(0, 0, 0, 0.5);
       }
 
-      &:nth-child(6) {
+      &:nth-child(7n+6) {
         background: rgba(0, 0, 0, 0.6);
       }
 
-      &:last-child {
-        width: 100%;
+      &:nth-child(7n+7) {
         background: rgba(0, 0, 0, 0.7);
       }
     }

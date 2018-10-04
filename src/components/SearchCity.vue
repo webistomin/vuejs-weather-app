@@ -277,7 +277,7 @@
   .search {
     padding: 20px;
     padding-bottom: 0;
-    background-color: cornflowerblue;
+    text-align: center;
 
     &__title {
       margin: 0;
@@ -290,9 +290,7 @@
     }
 
     &__inner {
-      display: flex;
-      justify-content: space-between;
-      max-width: 312px;
+     text-align: center;
     }
 
     &__input {
