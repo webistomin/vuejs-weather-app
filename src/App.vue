@@ -58,6 +58,15 @@
       Forecast,
       SearchCity,
     },
+    mounted() {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+        this.$store.commit('saveLongitude', longitude);
+        this.$store.commit('saveLatitude', latitude);
+        this.$store.dispatch('getForecastsFromAPIByLatAndLon');
+      });
+    },
     computed: {
       getBackgroundColor() {
         const averageTemperature = this.$store.getters.getAverageTemperature;
@@ -155,7 +164,7 @@
 
   path {
     stroke-width: 0.25;
-    fill: #241E20;
+    fill: #241e20;
   }
 
   #cloud {
@@ -196,6 +205,7 @@
       transform: rotateZ(360deg);
     }
   }
+
   /* Rain */
   .rain {
     position: absolute;
@@ -272,6 +282,7 @@
       opacity: 0;
     }
   }
+
   .text {
     font-family: 'Oswald', sans-serif;
     font-weight: 400;

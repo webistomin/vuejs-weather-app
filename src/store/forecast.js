@@ -7,6 +7,8 @@ export default {
     averageTemperature: 0,
     loading: false,
     error: '',
+    lat: '',
+    lon: '',
   },
   mutations: {
     saveForecasts(state, payload) {
@@ -20,6 +22,12 @@ export default {
     },
     setErrorMessage(state, payload) {
       state.error = payload;
+    },
+    saveLongitude(state, payload) {
+      state.lon = payload;
+    },
+    saveLatitude(state, payload) {
+      state.lat = payload;
     },
   },
   actions: {
@@ -36,7 +44,31 @@ export default {
           }
           commit('saveTemperature', Math.ceil(resultTemperature / response.data.data.length));
           commit('updateLoadingState', false);
-        }).catch((error) => {
+        })
+        .catch((error) => {
+          commit('updateLoadingState', false);
+          commit('setErrorMessage', error.message);
+          throw error;
+        });
+    },
+    getForecastsFromAPIByLatAndLon({ commit, state }) {
+      let resultTemperature = 0;
+      commit('setErrorMessage', '');
+      commit('updateLoadingState', true);
+      axios
+        .get(`https://api.weatherbit.io/v2.0/forecast/daily?lat=${state.lat}&lon=${state.lon}&key=${state.publicKey}`)
+        .then((response) => {
+          commit('saveForecasts', response.data);
+          for (let i = 0; i < response.data.data.length; i += 1) {
+            resultTemperature += response.data.data[i].temp;
+          }
+          commit('saveTemperature', Math.ceil(resultTemperature / response.data.data.length));
+          commit('updateLoadingState', false);
+          commit('saveSelectedCountry', response.data.country_code);
+          commit('saveSearchQuery', response.data.city_name);
+          console.log(response.data.country_code);
+        })
+        .catch((error) => {
           commit('updateLoadingState', false);
           commit('setErrorMessage', error.message);
           throw error;
