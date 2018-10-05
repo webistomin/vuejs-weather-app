@@ -5,11 +5,17 @@
       <p class="forecast__location">
         <span class="forecast__city">{{getForecasts.city_name}},</span>
         <span class="forecast__country">{{getForecasts.country_code}}</span>
+        <button class="forecast__favorite heart click-heart"
+                @click="addedToFavorite = !addedToFavorite"
+                :class="{'animated-heart': addedToFavorite}">
+          Add to favorite
+        </button>
       </p>
     </div>
     <ul class="forecast__list">
       <li class="forecast__item"
-          v-for="(forecast, index) of getForecasts.data">
+          v-for="(forecast, index) of getForecasts.data"
+          :key="index">
         <span class="forecast__day">{{forecast.datetime | getDate}}</span>
         <div class="weather" v-html="getWeatherIcon(forecast.weather.code)"></div>
         <p class="forecast__group forecast__group--mb">
@@ -44,7 +50,7 @@
     name: 'Forecast',
     data() {
       return {
-        opened: false,
+        addedToFavorite: false,
       };
     },
     mounted() {
@@ -159,6 +165,8 @@
     }
 
     &__location {
+      display: flex;
+      align-items: center;
       font-family: 'Oswald', sans-serif;
       font-weight: 400;
       font-size: 26px;
@@ -201,34 +209,68 @@
       padding: 20px;
 
       &:nth-child(7n+1) {
-        background: rgba(0, 0, 0, 0.1);
+        background: rgba(0, 0, 0, 0.0625);
       }
 
       &:nth-child(7n+2) {
-        background: rgba(0, 0, 0, 0.2);
+        background: rgba(0, 0, 0, 0.125);
       }
 
       &:nth-child(7n+3) {
-        background: rgba(0, 0, 0, 0.3);
+        background: rgba(0, 0, 0, 0.1875);
       }
 
       &:nth-child(7n+4) {
-        background: rgba(0, 0, 0, 0.4);
+        background: rgba(0, 0, 0, 0.25);
       }
 
       &:nth-child(7n+5) {
-        background: rgba(0, 0, 0, 0.5);
+        background: rgba(0, 0, 0, 0.3125);
       }
 
       &:nth-child(7n+6) {
-        background: rgba(0, 0, 0, 0.6);
+        background: rgba(0, 0, 0, 0.375);
       }
 
       &:nth-child(7n+7) {
-        background: rgba(0, 0, 0, 0.7);
+        background: rgba(0, 0, 0, 0.4375);
       }
 
+      &:nth-child(7n+8) {
+        background: rgba(0, 0, 0, 0.5);
+      }
 
+      &:nth-child(7n+9) {
+        background: rgba(0, 0, 0, 0.5625);
+      }
+
+      &:nth-child(7n+10) {
+        background: rgba(0, 0, 0, 0.625);
+      }
+
+      &:nth-child(7n+11) {
+        background: rgba(0, 0, 0, 0.6875);
+      }
+
+      &:nth-child(7n+12) {
+        background: rgba(0, 0, 0, 0.75);
+      }
+
+      &:nth-child(7n+13) {
+        background: rgba(0, 0, 0, 0.8125);
+      }
+
+      &:nth-child(7n+14) {
+        background: rgba(0, 0, 0, 0.875);
+      }
+
+      &:nth-child(7n+15) {
+        background: rgba(0, 0, 0, 0.9375);
+      }
+
+      &:nth-child(7n+16) {
+        background: rgba(0, 0, 0, 0.95);
+      }
     }
 
     @media (min-width: 480px) {
@@ -251,6 +293,40 @@
       &__item {
         width: 20%;
       }
+    }
+  }
+
+  .heart {
+    margin: 0 auto;
+    background: url('https://abs.twimg.com/a/1446542199/img/t1/web_heart_animation.png');
+    width: 50px;
+    height: 50px;
+    background-size: 2900%;
+    background-repeat: no-repeat;
+    font-size: 0;
+    cursor: pointer;
+  }
+  .heart:hover {
+    background-position: right;
+  }
+
+  .animated-heart {
+    animation-name: moveHeart;
+    animation-duration: 0.8s;
+    animation-iteration-count: 1;
+    animation-timing-function: steps(28);
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes moveHeart {
+    0% {
+      background-position: left;
+    }
+    50% {
+      background-position: right;
+    }
+    100% {
+      background-position: right;
     }
   }
 

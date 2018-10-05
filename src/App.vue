@@ -89,14 +89,13 @@
 <style lang="less">
   #app {
     transition: all 0.3s ease-in-out;
-    height: 100vh;
+    min-height: 100vh;
   }
 
   body {
     margin: 0;
     font-family: 'Quattrocento', serif;
     font-weight: 400;
-    background-color: cornflowerblue;
   }
 
   img {

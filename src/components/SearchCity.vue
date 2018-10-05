@@ -1,7 +1,20 @@
 <template>
-    <section class="search">
-      <div class="search__country">
-        <h1 class="search__title">Please, choose country before</h1>
+  <section class="search">
+    <!--<div class="search__favorites">-->
+      <!--<h2 class="search__title">Favorite countries</h2>-->
+      <!--<ul class="search__list">-->
+        <!--<li class="search__item">-->
+          <!--<p class="search__desc">-->
+            <!--<span class="search__name">Moscow,</span>-->
+            <!--<span class="search__code">RU</span>-->
+          <!--</p>-->
+          <!--<button class="search__button"></button>-->
+        <!--</li>-->
+      <!--</ul>-->
+    <!--</div>-->
+    <div class="search__country">
+      <div class="search__wrapper">
+        <h1 class="search__title">Please, choose country before search</h1>
         <select class="search__select" v-model="selectedCountry">
           <option value="RU">Russia</option>
           <option value="US">USA</option>
@@ -222,22 +235,17 @@
           </optgroup>
         </select>
       </div>
-      <div class="search__inner">
-        <input type="text"
-               class="search__input"
-               autofocus
-               v-model="searchQuery"
-               @input="debouncedGetAnswer"
-               placeholder="Please, enter city name">
-        <!--<button class="search__btn" type="button">Add city</button>-->
-      </div>
-      <!--<ul class="search__list">-->
-        <!--<li class="search__item">-->
-          <!--<span class="search__name">Moscow</span>-->
-          <!--<button class="search__button"></button>-->
-        <!--</li>-->
-      <!--</ul>-->
-    </section>
+    </div>
+    <div class="search__inner" v-if="selectedCountry">
+      <input type="text"
+             class="search__input"
+             autofocus
+             v-model="searchQuery"
+             @input="debouncedGetAnswer"
+             placeholder="Please, enter city name">
+    </div>
+
+  </section>
 </template>
 
 <script>
@@ -300,10 +308,11 @@
     }
 
     &__inner {
-     text-align: center;
+      text-align: center;
     }
 
     &__input {
+      border: thin solid blue;
       box-sizing: border-box;
       width: 269px;
       padding-left: 16px;
@@ -333,6 +342,7 @@
       height: 20px;
       position: relative;
       cursor: pointer;
+      margin-left: 20px;
 
       &::before,
       &::after {
@@ -353,26 +363,16 @@
       }
     }
 
-    &__name {
-      padding: 0 30px;
-      cursor: pointer;
-
-      &:hover {
-        color: blueviolet;
-      }
-    }
-
     &__list {
-      padding-top: 20px;
       display: flex;
       flex-direction: column;
+      padding-bottom: 20px;
     }
 
     &__item {
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 10px;
       color: #ffffff;
       text-align: center;
       font-family: 'Oswald', sans-serif;
@@ -407,33 +407,27 @@
       -webkit-appearance: none;
       -moz-appearance: none;
 
-      background-image:
-        linear-gradient(45deg, transparent 50%, blue 50%),
-        linear-gradient(135deg, blue 50%, transparent 50%),
-        linear-gradient(to right, skyblue, skyblue);
-      background-position:
-        calc(100% - 20px) calc(1em + 2px),
-        calc(100% - 15px) calc(1em + 2px),
-        100% 0;
-      background-size:
-        5px 5px,
-        5px 5px,
-        2.5em 2.5em;
+      background-image: linear-gradient(45deg, transparent 50%, blue 50%),
+      linear-gradient(135deg, blue 50%, transparent 50%),
+      linear-gradient(to right, skyblue, skyblue);
+      background-position: calc(100% - 20px) calc(1em + 2px),
+      calc(100% - 15px) calc(1em + 2px),
+      100% 0;
+      background-size: 5px 5px,
+      5px 5px,
+      2.5em 2.5em;
       background-repeat: no-repeat;
 
       &:focus {
-        background-image:
-          linear-gradient(45deg, white 50%, transparent 50%),
-          linear-gradient(135deg, transparent 50%, white 50%),
-          linear-gradient(to right, gray, gray);
-        background-position:
-          calc(100% - 15px) 1em,
-          calc(100% - 20px) 1em,
-          100% 0;
-        background-size:
-          5px 5px,
-          5px 5px,
-          2.5em 2.5em;
+        background-image: linear-gradient(45deg, white 50%, transparent 50%),
+        linear-gradient(135deg, transparent 50%, white 50%),
+        linear-gradient(to right, gray, gray);
+        background-position: calc(100% - 15px) 1em,
+        calc(100% - 20px) 1em,
+        100% 0;
+        background-size: 5px 5px,
+        5px 5px,
+        2.5em 2.5em;
         background-repeat: no-repeat;
         border-color: grey;
         outline: 0;
@@ -441,10 +435,43 @@
     }
 
     &__country {
-      margin-bottom: 20px;
+      padding-bottom: 20px;
     }
 
+    @media (min-width: 992px) {
+      position: relative;
 
+      &__favorites {
+        position: absolute;
+        height: 200px;
+        overflow: auto;
+        padding-right: 20px;
 
+        &::-webkit-scrollbar-track
+        {
+          -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+          background-color: #F5F5F5;
+          border-radius: 10px;
+        }
+
+        &::-webkit-scrollbar
+        {
+          width: 10px;
+          background-color: transparent;
+        }
+
+        &::-webkit-scrollbar-thumb
+        {
+          border-radius: 10px;
+          background-image: -webkit-gradient(linear,
+          left bottom,
+          left top,
+          color-stop(0.44, rgb(122,153,217)),
+          color-stop(0.72, rgb(73,125,189)),
+          color-stop(0.86, rgb(28,58,148)));
+        }
+
+      }
+    }
   }
 </style>
