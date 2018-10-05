@@ -1,17 +1,17 @@
 <template>
   <section class="search">
-    <!--<div class="search__favorites">-->
-      <!--<h2 class="search__title">Favorite countries</h2>-->
-      <!--<ul class="search__list">-->
-        <!--<li class="search__item">-->
-          <!--<p class="search__desc">-->
-            <!--<span class="search__name">Moscow,</span>-->
-            <!--<span class="search__code">RU</span>-->
-          <!--</p>-->
-          <!--<button class="search__button"></button>-->
-        <!--</li>-->
-      <!--</ul>-->
-    <!--</div>-->
+    <div class="search__favorites" v-if="getFavoriteCountries.length !== 0">
+      <h2 class="search__title">Favorite countries</h2>
+      <ul class="search__list">
+        <li class="search__item" v-for="country of getFavoriteCountries">
+          <p class="search__desc" @click="searchCountryFromFavorite(country.country, country.code)">
+            <span class="search__name">{{country.country}},</span>
+            <span class="search__code">{{country.code}}</span>
+          </p>
+          <button class="search__button"></button>
+        </li>
+      </ul>
+    </div>
     <div class="search__country">
       <div class="search__wrapper">
         <h1 class="search__title">Please, choose country before search</h1>
@@ -262,6 +262,11 @@
       getForecastsFromAPI() {
         this.$store.dispatch('getForecastsFromAPI');
       },
+      searchCountryFromFavorite(country, code) {
+        this.$store.commit('saveSearchQuery', country);
+        this.$store.commit('saveSelectedCountry', code);
+        this.$store.dispatch('getForecastsFromAPI');
+      },
     },
     computed: {
       selectedCountry: {
@@ -280,6 +285,9 @@
           this.$store.commit('saveSearchQuery', value);
         },
       },
+      getFavoriteCountries() {
+        return this.$store.getters.getFavoriteCountries;
+      },
     },
     watch: {
       selectedCountry() {
@@ -296,6 +304,14 @@
     padding: 20px;
     padding-bottom: 0;
     text-align: center;
+
+    &__desc {
+      cursor: pointer;
+
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
 
     &__title {
       margin: 0;

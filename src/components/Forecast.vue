@@ -6,7 +6,7 @@
         <span class="forecast__city">{{getForecasts.city_name}},</span>
         <span class="forecast__country">{{getForecasts.country_code}}</span>
         <button class="forecast__favorite heart click-heart"
-                @click="addedToFavorite = !addedToFavorite"
+                @click="saveFavorite"
                 :class="{'animated-heart': addedToFavorite}">
           Add to favorite
         </button>
@@ -123,6 +123,13 @@
               <div class="icon icon--cloud anim--expand">Clouds</div>
             `;
         }
+      },
+      saveFavorite() {
+        this.addedToFavorite = !this.addedToFavorite;
+        this.$store.commit('addToFavoriteList', {
+          country: this.$store.getters.getSearchQuery,
+          code: this.$store.getters.getSelectedCountry,
+        });
       },
     },
     filters: {
