@@ -4,7 +4,7 @@
       <h2 class="search__title">Favorite countries</h2>
       <ul class="search__list">
         <li class="search__item" v-for="country of getFavoriteCities">
-          <p class="search__desc" @click="searchCityFromFavorite(country.country, country.code)">
+          <p class="search__desc" @click="searchCityFromFavorite(country.city, country.code)">
             <span class="search__name">{{country.city}},</span>
             <span class="search__code">{{country.code}}</span>
           </p>

@@ -1,13 +1,13 @@
 <template>
-  <h1 class="error" v-if="getErrorMessage">This city does not exist 😆	</h1>
+  <h1 class="error" v-if="getErrorMessage">{{getErrorMessage}}</h1>
   <section class="forecast" v-else-if="getForecasts.length !== 0">
     <div class="forecast__current">
       <p class="forecast__location">
         <span class="forecast__city">{{getForecasts.city_name}},</span>
         <span class="forecast__country">{{getForecasts.country_code}}</span>
         <button class="forecast__favorite heart click-heart"
-                @click="saveFavorite"
-                :class="{'animated-heart': addedToFavorite}">
+                @click="saveFavorite(getForecasts.city_name, getForecasts.country_code)"
+                :class="{'animated-heart': addedToFavorite || isFavorite(getForecasts.city_name, getForecasts.country_code)}">
           Add to favorite
         </button>
       </p>
@@ -124,12 +124,36 @@
             `;
         }
       },
-      saveFavorite() {
-        this.addedToFavorite = !this.addedToFavorite;
-        this.$store.commit('addToFavoriteList', {
-          city: this.$store.getters.getSearchQuery,
-          code: this.$store.getters.getSelectedCountry,
-        });
+      isFavorite(city, code) {
+        const favoriteList = this.$store.getters.getFavoriteCities;
+        for (let i = 0; i < favoriteList.length; i += 1) {
+          if (favoriteList[i].city === city && favoriteList[i].code === code) {
+            return true;
+          }
+        }
+        return false;
+      },
+      saveFavorite(city, code) {
+        const favoriteList = this.$store.getters.getFavoriteCities;
+        if (favoriteList.length !== 0) {
+          for (let i = 0; i < favoriteList.length; i += 1) {
+            if (favoriteList[i].city === city && favoriteList[i].code === code) {
+              this.$store.commit('setErrorMessage', 'Sorry, you have already added this city to favorite list 😆');
+            } else {
+              this.addedToFavorite = !this.addedToFavorite;
+              this.$store.commit('addToFavoriteList', {
+                city: this.$store.getters.getSearchQuery,
+                code: this.$store.getters.getSelectedCountry,
+              });
+            }
+          }
+        } else {
+          this.addedToFavorite = !this.addedToFavorite;
+          this.$store.commit('addToFavoriteList', {
+            city: this.$store.getters.getSearchQuery,
+            code: this.$store.getters.getSelectedCountry,
+          });
+        }
       },
     },
     filters: {
@@ -145,7 +169,9 @@
         if (degrees > 157.5) return 'Southerly';
         if (degrees > 122.5) return 'South Easterly';
         if (degrees > 67.5) return 'Easterly';
-        if (degrees > 22.5) { return 'North Easterly'; }
+        if (degrees > 22.5) {
+          return 'North Easterly';
+        }
         return 'Northerly';
       },
     },
@@ -313,6 +339,7 @@
     font-size: 0;
     cursor: pointer;
   }
+
   .heart:hover {
     background-position: right;
   }

@@ -47,7 +47,7 @@ export default {
         })
         .catch((error) => {
           commit('updateLoadingState', false);
-          commit('setErrorMessage', error.message);
+          commit('setErrorMessage', 'This city does not exist 😆');
           throw error;
         });
     },
@@ -69,7 +69,7 @@ export default {
         })
         .catch((error) => {
           commit('updateLoadingState', false);
-          commit('setErrorMessage', error.message);
+          commit('setErrorMessage', 'This city does not exist 😆');
           throw error;
         });
     },
