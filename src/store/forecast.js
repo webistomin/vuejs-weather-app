@@ -66,7 +66,6 @@ export default {
           commit('updateLoadingState', false);
           commit('saveSelectedCountry', response.data.country_code);
           commit('saveSearchQuery', response.data.city_name);
-          console.log(response.data.country_code);
         })
         .catch((error) => {
           commit('updateLoadingState', false);

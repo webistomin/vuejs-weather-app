@@ -59,13 +59,15 @@
       SearchCity,
     },
     mounted() {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const latitude = position.coords.latitude;
-        const longitude = position.coords.longitude;
-        this.$store.commit('saveLongitude', longitude);
-        this.$store.commit('saveLatitude', latitude);
-        this.$store.dispatch('getForecastsFromAPIByLatAndLon');
-      });
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
+          this.$store.commit('saveLongitude', longitude);
+          this.$store.commit('saveLatitude', latitude);
+          this.$store.dispatch('getForecastsFromAPIByLatAndLon');
+        });
+      }
     },
     computed: {
       getBackgroundColor() {
