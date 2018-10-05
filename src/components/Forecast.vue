@@ -127,7 +127,7 @@
       saveFavorite() {
         this.addedToFavorite = !this.addedToFavorite;
         this.$store.commit('addToFavoriteList', {
-          country: this.$store.getters.getSearchQuery,
+          city: this.$store.getters.getSearchQuery,
           code: this.$store.getters.getSelectedCountry,
         });
       },

@@ -1,20 +1,20 @@
 <template>
   <section class="search">
-    <div class="search__favorites" v-if="getFavoriteCountries.length !== 0">
+    <div class="search__favorites" v-if="getFavoriteCities.length !== 0">
       <h2 class="search__title">Favorite countries</h2>
       <ul class="search__list">
-        <li class="search__item" v-for="country of getFavoriteCountries">
-          <p class="search__desc" @click="searchCountryFromFavorite(country.country, country.code)">
-            <span class="search__name">{{country.country}},</span>
+        <li class="search__item" v-for="country of getFavoriteCities">
+          <p class="search__desc" @click="searchCityFromFavorite(country.country, country.code)">
+            <span class="search__name">{{country.city}},</span>
             <span class="search__code">{{country.code}}</span>
           </p>
-          <button class="search__button"></button>
+          <button class="search__button" title="Delete city" @click="removeFromFavoriteList(country.city, country.code)"></button>
         </li>
       </ul>
     </div>
     <div class="search__country">
       <div class="search__wrapper">
-        <h1 class="search__title">Please, choose country before search</h1>
+        <h1 class="search__title" v-if="!selectedCountry">Please, choose country before search</h1>
         <select class="search__select" v-model="selectedCountry">
           <option value="RU">Russia</option>
           <option value="US">USA</option>
@@ -261,10 +261,18 @@
       getForecastsFromAPI() {
         this.$store.dispatch('getForecastsFromAPI');
       },
-      searchCountryFromFavorite(country, code) {
-        this.$store.commit('saveSearchQuery', country);
+      searchCityFromFavorite(city, code) {
+        this.$store.commit('saveSearchQuery', city);
         this.$store.commit('saveSelectedCountry', code);
         this.$store.dispatch('getForecastsFromAPI');
+      },
+      removeFromFavoriteList(city, code) {
+        const favoriteList = this.$store.getters.getFavoriteCities;
+        for (let i = 0; i < favoriteList.length; i += 1) {
+          if (favoriteList[i].city === city && favoriteList[i].code === code) {
+            this.$store.commit('deleteFromFavoriteList', i);
+          }
+        }
       },
     },
     computed: {
@@ -284,8 +292,8 @@
           this.$store.commit('saveSearchQuery', value);
         },
       },
-      getFavoriteCountries() {
-        return this.$store.getters.getFavoriteCountries;
+      getFavoriteCities() {
+        return this.$store.getters.getFavoriteCities;
       },
     },
     watch: {
@@ -462,28 +470,25 @@
         overflow: auto;
         padding-right: 20px;
 
-        &::-webkit-scrollbar-track
-        {
-          -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-          background-color: #F5F5F5;
+        &::-webkit-scrollbar-track {
+          -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+          background-color: #f5f5f5;
           border-radius: 10px;
         }
 
-        &::-webkit-scrollbar
-        {
+        &::-webkit-scrollbar {
           width: 10px;
           background-color: transparent;
         }
 
-        &::-webkit-scrollbar-thumb
-        {
+        &::-webkit-scrollbar-thumb {
           border-radius: 10px;
           background-image: -webkit-gradient(linear,
           left bottom,
           left top,
-          color-stop(0.44, rgb(122,153,217)),
-          color-stop(0.72, rgb(73,125,189)),
-          color-stop(0.86, rgb(28,58,148)));
+          color-stop(0.44, rgb(122, 153, 217)),
+          color-stop(0.72, rgb(73, 125, 189)),
+          color-stop(0.86, rgb(28, 58, 148)));
         }
 
       }

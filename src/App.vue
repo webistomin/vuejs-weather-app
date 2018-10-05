@@ -67,6 +67,7 @@
           this.$store.commit('saveLatitude', latitude);
           this.$store.dispatch('getForecastsFromAPIByLatAndLon');
         });
+        this.$store.commit('loadCitiesFromLocalStorage');
       }
     },
     computed: {
