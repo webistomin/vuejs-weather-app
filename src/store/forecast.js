@@ -6,11 +6,15 @@ export default {
     forecasts: [],
     averageTemperature: 0,
     loading: false,
+    addedToFavorite: false,
     error: '',
     lat: '',
     lon: '',
   },
   mutations: {
+    updateAnimationState(state, payload) {
+      state.addedToFavorite = payload;
+    },
     saveForecasts(state, payload) {
       state.forecasts = payload;
     },
@@ -86,6 +90,9 @@ export default {
     },
     getErrorMessage(state) {
       return state.error;
+    },
+    getAnimationState(state) {
+      return state.addedToFavorite;
     },
   },
 };

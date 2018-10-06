@@ -7,7 +7,8 @@
         <span class="forecast__country">{{getForecasts.country_code}}</span>
         <button class="forecast__favorite heart click-heart"
                 @click="saveFavorite(getForecasts.city_name, getForecasts.country_code)"
-                :class="{'animated-heart': addedToFavorite || isFavorite(getForecasts.city_name, getForecasts.country_code)}">
+                :class="{'animated-heart': getAnimationState}"
+                aria-label="Add to favorite">
           Add to favorite
         </button>
       </p>
@@ -48,20 +49,15 @@
 <script>
   export default {
     name: 'Forecast',
-    data() {
-      return {
-        addedToFavorite: false,
-      };
-    },
-    mounted() {
-      // this.$store.dispatch('getForecastsFromAPI');
-    },
     computed: {
       getForecasts() {
         return this.$store.getters.getForecasts;
       },
       getErrorMessage() {
         return this.$store.getters.getErrorMessage;
+      },
+      getAnimationState() {
+        return this.$store.getters.getAnimationState;
       },
     },
     methods: {
@@ -124,37 +120,31 @@
             `;
         }
       },
-      isFavorite(city, code) {
-        const favoriteList = this.$store.getters.getFavoriteCities;
-        for (let i = 0; i < favoriteList.length; i += 1) {
-          if (favoriteList[i].city === city && favoriteList[i].code === code) {
-            return true;
-          }
-        }
-        return false;
-      },
       saveFavorite(city, code) {
         const favoriteList = this.$store.getters.getFavoriteCities;
-        if (favoriteList.length !== 0) {
-          for (let i = 0; i < favoriteList.length; i += 1) {
-            if (favoriteList[i].city === city && favoriteList[i].code === code) {
-              this.$store.commit('setErrorMessage', 'Sorry, you have already added this city to favorite list 😆');
-            } else {
-              this.addedToFavorite = !this.addedToFavorite;
-              this.$store.commit('addToFavoriteList', {
-                city: this.$store.getters.getSearchQuery,
-                code: this.$store.getters.getSelectedCountry,
-              });
-            }
-          }
+        const index = favoriteList.findIndex(arr => arr.city === city && arr.code === code);
+        if (index !== -1) {
+          this.$store.commit('updateAnimationState', false);
+          this.$store.commit('deleteFromFavoriteList', index);
         } else {
-          this.addedToFavorite = !this.addedToFavorite;
+          this.$store.commit('updateAnimationState', true);
           this.$store.commit('addToFavoriteList', {
             city: this.$store.getters.getSearchQuery,
             code: this.$store.getters.getSelectedCountry,
           });
         }
       },
+    },
+    mounted() {
+      this.$store.commit('updateAnimationState', false);
+      const city = this.$store.getters.getForecasts.city_name;
+      const code = this.$store.getters.getForecasts.country_code;
+      const favoriteList = this.$store.getters.getFavoriteCities;
+      for (let i = 0; i < favoriteList.length; i += 1) {
+        if (favoriteList[i].city === city && favoriteList[i].code === code) {
+          this.$store.commit('updateAnimationState', true);
+        }
+      }
     },
     filters: {
       getDate(datetime) {

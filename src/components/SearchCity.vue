@@ -4,18 +4,26 @@
       <h2 class="search__title">Favorite countries</h2>
       <ul class="search__list">
         <li class="search__item" v-for="country of getFavoriteCities">
-          <p class="search__desc" @click="searchCityFromFavorite(country.city, country.code)">
+          <p class="search__desc"
+             @click="searchCityFromFavorite(country.city, country.code)"
+             aria-label="Favorite city">
             <span class="search__name">{{country.city}},</span>
             <span class="search__code">{{country.code}}</span>
           </p>
-          <button class="search__button" title="Delete city" @click="removeFromFavoriteList(country.city, country.code)"></button>
+          <button class="search__button"
+                  title="Delete city"
+                  @click="removeFromFavoriteList(country.city, country.code)"
+                  aria-label="Delete from favorite">
+          </button>
         </li>
       </ul>
     </div>
     <div class="search__country">
       <div class="search__wrapper">
         <h1 class="search__title" v-if="!selectedCountry">Please, choose country before search</h1>
-        <select class="search__select" v-model="selectedCountry">
+        <select class="search__select"
+                v-model="selectedCountry"
+                aria-label="Select country">
           <option value="RU">Russia</option>
           <option value="US">USA</option>
           <optgroup label="Other countries">
@@ -241,9 +249,9 @@
              autofocus
              v-model="searchQuery"
              @input="debouncedGetAnswer"
-             placeholder="Please, enter city name">
+             placeholder="Please, enter city name"
+             aria-label="City name">
     </div>
-
   </section>
 </template>
 
@@ -271,6 +279,7 @@
         for (let i = 0; i < favoriteList.length; i += 1) {
           if (favoriteList[i].city === city && favoriteList[i].code === code) {
             this.$store.commit('deleteFromFavoriteList', i);
+            this.$store.commit('updateAnimationState', false);
           }
         }
       },
@@ -281,6 +290,7 @@
           return this.$store.getters.getSelectedCountry;
         },
         set(value) {
+          this.$store.commit('updateAnimationState', false);
           this.$store.commit('saveSelectedCountry', value);
         },
       },
