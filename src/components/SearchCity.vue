@@ -263,7 +263,7 @@
       return {};
     },
     created() {
-      this.debouncedGetAnswer = _.debounce(this.getForecastsFromAPI, 500);
+      this.debouncedGetAnswer = _.debounce(this.getForecastsFromAPI, 600);
     },
     methods: {
       getForecastsFromAPI() {

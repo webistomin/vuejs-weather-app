@@ -49,10 +49,10 @@ export default {
           commit('saveTemperature', Math.ceil(resultTemperature / response.data.data.length));
           commit('updateLoadingState', false);
         })
-        .catch((error) => {
+        .catch(() => {
           commit('updateLoadingState', false);
           commit('setErrorMessage', 'This city does not exist 😆');
-          throw error;
+          // throw error;
         });
     },
     getForecastsFromAPIByLatAndLon({ commit, state }) {
@@ -71,10 +71,10 @@ export default {
           commit('saveSelectedCountry', response.data.country_code);
           commit('saveSearchQuery', response.data.city_name);
         })
-        .catch((error) => {
+        .catch(() => {
           commit('updateLoadingState', false);
           commit('setErrorMessage', 'This city does not exist 😆');
-          throw error;
+          // throw error;
         });
     },
   },

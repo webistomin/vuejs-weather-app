@@ -122,7 +122,8 @@
       },
       saveFavorite(city, code) {
         const favoriteList = this.$store.getters.getFavoriteCities;
-        const index = favoriteList.findIndex(arr => arr.city === city && arr.code === code);
+        // eslint-disable-next-line max-len
+        const index = favoriteList.findIndex(arr => arr.city.toLowerCase() === city.toLowerCase() && arr.code === code);
         if (index !== -1) {
           this.$store.commit('updateAnimationState', false);
           this.$store.commit('deleteFromFavoriteList', index);
@@ -140,9 +141,12 @@
       const city = this.$store.getters.getForecasts.city_name;
       const code = this.$store.getters.getForecasts.country_code;
       const favoriteList = this.$store.getters.getFavoriteCities;
-      for (let i = 0; i < favoriteList.length; i += 1) {
-        if (favoriteList[i].city === city && favoriteList[i].code === code) {
-          this.$store.commit('updateAnimationState', true);
+      if (favoriteList.length !== 0 && city && code) {
+        for (let i = 0; i < favoriteList.length; i += 1) {
+          // eslint-disable-next-line max-len
+          if (favoriteList[i].city.toLowerCase() === city.toLowerCase() && favoriteList[i].code === code) {
+            this.$store.commit('updateAnimationState', true);
+          }
         }
       }
     },
