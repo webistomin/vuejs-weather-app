@@ -256,14 +256,14 @@
 </template>
 
 <script>
-  import _ from 'lodash';
+  import debounce from 'lodash/debounce';
 
   export default {
     data() {
       return {};
     },
     created() {
-      this.debouncedGetAnswer = _.debounce(this.getForecastsFromAPI, 600);
+      this.debouncedGetAnswer = debounce(this.getForecastsFromAPI, 600);
     },
     methods: {
       getForecastsFromAPI() {
